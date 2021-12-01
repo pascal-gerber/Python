@@ -1,0 +1,20 @@
+for installing modules i recommand always use the syntax :
+
+#
+python -m pip install #modulename
+python -m pip install keyboard
+#
+
+since it will install much more properly than the normal pip install.
+
+also for the pip update which is then very important
+
+#
+python -m pip install --upgrade pip
+#
+
+which can in most cases prevent issues.
+
+sometimes modules wont work since theyre open source and sometimes they can also be dangerous, always look out what you download.
+
+Good luck!

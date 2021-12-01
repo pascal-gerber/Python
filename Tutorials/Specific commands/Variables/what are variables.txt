@@ -1,0 +1,2 @@
+Variables are simple containers that contains certain values such as a number or a text, it can contain much more like Button objects or server instances.
+a variable is basicly giving each componnent in a system a self defined name and being able to add options and personnalisations to that single object.

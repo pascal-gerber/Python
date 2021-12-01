@@ -1,0 +1,4 @@
+Tkinter is a module that allows the user to create Windows/widgets on GUI's "Grafical User Interface". 
+it is to make own pages with own designs and functions like buttons and entry fields
+
+Here are some Tkinter codes that can be usefull

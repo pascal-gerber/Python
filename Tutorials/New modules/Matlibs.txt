@@ -1,0 +1,6 @@
+import matplotlib.pyplot as plt
+
+ys = [3, 2, 4, -1, 23]
+
+plt.plot(ys)
+plt.show()

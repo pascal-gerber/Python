@@ -1,0 +1,21 @@
+This programm can only encrypt and decrypt texts that are only encoded on this programm, it may or may not be able to decode
+others.
+altho it might be possible for future upgrades to be decoding more than that.
+
+it works by changing the whole text as a binary worth
+step 1: Addition
+step 2: Multiplication
+step 3: Substraction
+
+the key is within the encoded text.
+the programm is able to read the key and use it to decode the sended text.
+mostly it is all automatic.
+
+IMPORTANT NOTE
+python has a limit of 1114111 Chars, char worths highter than that, will cause an error.
+so mostly it is best to only use 2 digit numbers, but if you understand or want to try it out.
+youre free to as you wish
+
+PS: dont come complaining after messing up with the program-
+
+Designed and created by: Pascal

@@ -1,0 +1,17 @@
+Variables can be different types but they always gonna be the main ones.
+
+anything that has a value/number is a variable even if its a simple function or a coordinate.
+they are usually lists or tuples.
+so any value is changable if you look at the end value and its "Type".
+
+some values can only be reached if converted twice like 
+
+#
+str(int(True))
+#
+
+which whould give another value if directly converted into a string.
+
+sometimes the variable can contain an other type of object than a variabletype, it can be either a button or a server itself, can be a gui window or anything really.
+
+Good luck!

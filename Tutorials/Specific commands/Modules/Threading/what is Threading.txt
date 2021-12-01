@@ -1,0 +1,2 @@
+threading is a module that allows you to run multiples "def" commands in the same time. threading is mostly used for letting multiples things work in the background, like for example a tkinter widget with a timer.
+it is very simple and allows for multitasking.

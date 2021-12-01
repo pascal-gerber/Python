@@ -1,0 +1,2 @@
+in the time module you can work with a number value that constantly changes to todays time.
+you can also which is mostly used, make the program wait a certain time to do certain specific functions.
