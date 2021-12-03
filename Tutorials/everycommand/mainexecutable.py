@@ -41,13 +41,15 @@ def openbrowser():
 
 def number(num):
     fileNames = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Variable changes 1.py",
-                 "List options.py", "If function.py", "Loops.py", "Modules.py"]
+                 "List options.py", "If function.py", "Loops.py", "Modules.py", "functions.py",
+                 "Timemodule.py"]
     buildpath(fileNames[num])
 
 def createinterface():
     window = Tk()
     titles = ["print explaination", "Variables part 1", "Variables part 2", "conversion of\nvariables", "string and lists",
-              "List sorting", "if function", "python loops", "download\nmodules"]
+              "List sorting", "if function", "python loops", "download\nmodules", "Functions",
+              "time module"]
     mylist = Listbox(window, yscrollcommand = Scrollbar.set)
     for easystages in range(len(titles)):
         easy = Button(window, text=titles[easystages], bg="Aqua",
