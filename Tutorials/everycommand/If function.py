@@ -10,6 +10,7 @@ print(1 < 2, " <= this is true")
 #false works the same
 print(2 < 1, " <= this is false")
 
+print("test")
 #now lets put it all into a if statement
 if 1 < 2:
     print("this is True")

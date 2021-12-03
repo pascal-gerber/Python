@@ -1,2 +1,0 @@
-the file called "python knowledge library" can be double click opened and it will reveal my libabry im gonna be working on and add more stuff to. 
-for now its just the start and this is where you can start learning python. Enjoy
