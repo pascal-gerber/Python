@@ -10,3 +10,14 @@ print("hello world")
 #and in python theres another syntax that works within
 print('hello world')
 #the ' and the " are the same in python.
+
+#######################
+#IMPORTANT - F5       #
+#or going to Run      #
+#and click Run Module #
+#will execute the code#
+#######################
+
+#TIP: its on the top of the widget
+
+

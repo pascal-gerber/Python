@@ -40,5 +40,5 @@ def hi():
 #now, printing the function itself will give out the return
 
 print(hi())
-#works for anything
+#works for any class
 
