@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog
 import subprocess
 import os
 import sys
@@ -45,11 +46,12 @@ hardcol = "OrangeRed"
 projectcol = "Gold"
 bonuscol = "Silver"
 #_______________________________________________________________________________________
-    
+
 #some variable lines "should not be edited"
 Diffcolors = [easycol, mediumcol, hardcol, projectcol, bonuscol]
 difficulties = ["easy", "medium", "hard", "projects", "Bonus codes"]
 ObjList = []
+filename = ""
 
 #this selects files from the library
 def buildpath(filename, difficulty):
@@ -74,24 +76,33 @@ def buildpath(filename, difficulty):
 
 #this opens the requested file with the python program.
 def openpython(path):
-    exists = False
-    for i in reversed(range(11)):
-        try:
-            subprocess.call(["C:\Program Files\Python3" + str(i) + "\Lib\idlelib\idle.bat", path])
-            exists = True
-            break
-        except:
-            pass
-    if exists == False:
+    global filename
+    if len(filename) > 0:
+        subprocess.call([filename, path])
+    else:    
+        exists = False
         for i in reversed(range(11)):
             try:
-                subprocess.call(["C:\Python3" + str(i) + "\Lib\idlelib\idle.bat", path])
+                subprocess.call(["C:\Program Files\Python3" + str(i) + "\Lib\idlelib\idle.bat", path])
                 exists = True
                 break
             except:
                 pass
+        if exists == False:
+            for i in reversed(range(11)):
+                try:
+                    subprocess.call(["C:\Python3" + str(i) + "\Lib\idlelib\idle.bat", path])
+                    exists = True
+                    break
+                except:
+                    pass
+            if exists == False:
+                filename = filedialog.askopenfilename(initialdir = "/",
+                                                      title = "Idle.bat",
+                                                      filetypes = (("Text files", "*.bat*"), ("all files","*.*")))
+                exists = True
+                subprocess.call([filename, path])
         
-     
 
 def number(num, difficulty):
     global easystages
