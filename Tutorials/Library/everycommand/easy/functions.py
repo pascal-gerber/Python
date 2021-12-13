@@ -38,7 +38,9 @@ printasmanytimes("print me 3 times", 3)
 def hi():
     return("hello world")
 #now, printing the function itself will give out the return
+#this will if the function itself is printed, print the return content
+#or simply always take the return function.
 
 print(hi())
-#works for any class
+#works for any function
 

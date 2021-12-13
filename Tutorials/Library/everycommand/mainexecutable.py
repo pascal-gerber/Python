@@ -3,7 +3,7 @@ from tkinter import filedialog
 import subprocess
 import os
 import sys
-
+import getpass
 
 ################################################################################################################
 #for easier purposes of editing the file, i put all the changable needed variable lists on the top.
@@ -13,7 +13,7 @@ easystages = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Va
                      "Timemodule.py", "String options.py", "Math module and calculations.py", "indexes.py",
                      "Turtle.py"]
 
-mediumstages = ["osmodule.py"]
+mediumstages = ["osmodule.py", "classes.py", "Tkinter part1.py", "Tkinter part2.py", "Tkinter part3.py"]
 
 hardstages = [""]
 
@@ -28,7 +28,7 @@ easytitles = ["print explaination", "Variables part 1", "Variables part 2", "con
               "List sorting", "input", "if function", "python loops", "download\nmodules", "Functions", 
               "time module", "string options", "Mathematical\noperations","List Indexes", "basic Turtle"]
 
-mediumtitles = ["os module"]
+mediumtitles = ["os module", "classes", "Gui part 1", "Gui part 2", "Gui part 3"]
 
 hardtitles = [""]
 
@@ -97,11 +97,24 @@ def openpython(path):
                 except:
                     pass
             if exists == False:
-                filename = filedialog.askopenfilename(initialdir = "/",
-                                                      title = "Idle.bat",
-                                                      filetypes = (("Text files", "*.bat*"), ("all files","*.*")))
-                exists = True
-                subprocess.call([filename, path])
+                for i in reversed(range(11)):
+                    pathtopython = (str("C:\\Users\\" + getpass.getuser() + "\AppData\Local\Programs\Python\Python3") + str(i) + str("\Lib\idlelib\idle.bat"))
+                    try:
+                        subprocess.call([pathtopython, path])
+                        exists = True
+                        break
+                    except:
+                        pass
+                if exists == False:
+                    information = Tk()
+                    Label(information, text="Choose the Idle.bat file to start files over the path")
+                    filename = filedialog.askopenfilename(initialdir = "/",
+                                                          title = "Idle.bat",
+                                                          filetypes = (("Text files", "*.bat*"), ("all files","*.*")))
+                    exists = True
+                    subprocess.call([filename, path])
+                    information.mainloop()
+
         
 
 def number(num, difficulty):
@@ -133,6 +146,7 @@ def destroyLabel(Objects):
     ObjList = []
         
 ########################################Easy#####################################################
+#there are all the settups for each page    
 def easySetup():
     global ObjList
     global window
@@ -152,6 +166,7 @@ def easySetup():
         ObjList.append(easy)
     
 ########################################Medium#####################################################
+        
 def mediumSetup():
     window.configure(bg=mediumcol)
     titles = mediumtitles
@@ -167,6 +182,7 @@ def mediumSetup():
         ObjList.append(medium)
 
 ########################################Hard#####################################################
+        
 def hardSetup():
     window.configure(bg=hardcol)
     titles = hardtitles
@@ -181,6 +197,7 @@ def hardSetup():
         hard.grid(row = (int(hardstages//4)) + 2, column = hardstages - (hardstages//4)*4)
         ObjList.append(hard)
 ########################################projects#####################################################
+        
 def projectSetup():
     window.configure(bg=projectcol)
     titles = projecttitles
@@ -195,6 +212,7 @@ def projectSetup():
         project.grid(row = (int(projectstages//4)) + 2, column = projectstages - (projectstages//4)*4)
         ObjList.append(project)
 ########################################Bonus codes#####################################################
+        
 def bonusSetup():
     window.configure(bg=bonuscol)
     titles = bonustitles
@@ -208,6 +226,7 @@ def bonusSetup():
                       height = 5, width = 15)
         bonus.grid(row = (int(bonusstages//4)) + 2, column = bonusstages - (bonusstages//4)*4)
         ObjList.append(bonus)
+#__________________________________Pages___________________________________________________________________
 ###########################################################################################################
 
 def switch(Name):
@@ -238,8 +257,8 @@ def switch(Name):
         projectSetup()
     elif Name == "Bonus codes":
         bonusSetup()
-        
-
+#__________________________________________swap pages function_____________________________________________
+###########################################################################################################
 
 def difficultyswitch():
     global window
@@ -253,6 +272,8 @@ def difficultyswitch():
                             command=lambda difficulties = difficulties:switch(difficulties[4]), width = 15, height = 5,
                             bg = Diffcolors[4])
     DifficultyDown.grid(row = 0, column = 0)
+#_________________________________button changer___________________________________________________________
+###########################################################################################################
 
 def createinterface():
     global window
