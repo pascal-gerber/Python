@@ -9,15 +9,18 @@ import getpass
 #for easier purposes of editing the file, i put all the changable needed variable lists on the top.
 #these are the filenames choosen from python from specific paths
 easystages = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Variable changes 1.py",
-                     "List options.py","Input.py", "If function.py", "Loops.py", "Modules.py", "functions.py",
-                     "Timemodule.py", "String options.py", "Math module and calculations.py", "indexes.py",
-                     "Turtle.py"]
+                     "List options.py","Input.py", "If function.py", "Loops.py", "functions.py",
+                     "String options.py", "Math module and calculations.py", "indexes.py"
+                     ]
 
-mediumstages = ["osmodule.py", "classes.py", "Tkinter part1.py", "Tkinter part2.py", "Tkinter part3.py"]
+mediumstages = ["classes.py", ""]
 
 hardstages = [""]
 
-projectstages = [""]
+modulestages = ["Modules.py","Timemodule.py", "Turtle.py",  "osmodule.py", "Tkinter part1.py", "Tkinter part2.py",
+                "Tkinter part3.py", "Tkinter part4.py"]
+
+projectstages = ["turtlestar.py"]
 
 bonusstages = [""]
 
@@ -25,14 +28,17 @@ bonusstages = [""]
 #same reason here why its on the top
 #but these are the visual titles on the pages
 easytitles = ["print explaination", "Variables part 1", "Variables part 2", "conversion of\nvariables", "string and lists",
-              "List sorting", "input", "if function", "python loops", "download\nmodules", "Functions", 
-              "time module", "string options", "Mathematical\noperations","List Indexes", "basic Turtle"]
+              "List sorting", "input", "if function", "python loops", "Functions", 
+              "string options", "Mathematical\noperations","List Indexes"]
 
-mediumtitles = ["os module", "classes", "Gui part 1", "Gui part 2", "Gui part 3"]
+mediumtitles = ["classes", ""]
 
 hardtitles = [""]
 
-projecttitles = [""]
+moduletitles = ["download\nmodules","time module", "basic Turtle", "os module", "Gui part 1", "Gui part 2",
+                "Gui part 3", "Gui part 4"]
+
+projecttitles = ["Turtle star"]
 
 bonustitles = [""]
 ################################################################################################################
@@ -43,13 +49,14 @@ bonustitles = [""]
 easycol = "Aqua"
 mediumcol = "Lime"
 hardcol = "OrangeRed"
+modulecol = "Teal"
 projectcol = "Gold"
 bonuscol = "Silver"
 #_______________________________________________________________________________________
 
 #some variable lines "should not be edited"
-Diffcolors = [easycol, mediumcol, hardcol, projectcol, bonuscol]
-difficulties = ["easy", "medium", "hard", "projects", "Bonus codes"]
+Diffcolors = [easycol, mediumcol, hardcol, modulecol, projectcol, bonuscol]
+difficulties = ["easy", "medium", "hard", "modules", "projects", "Bonus codes"]
 ObjList = []
 filename = ""
 
@@ -68,6 +75,8 @@ def buildpath(filename, difficulty):
         pathtofiles += "medium\\" + filename
     elif difficulty == "hard":
         pathtofiles += "hard\\" + filename
+    elif difficulty == "modules":
+        pathtofiles += "modules\\" + filename
     elif difficulty == "projects":
         pathtofiles += "projects\\" + filename
     elif difficulty == "Bonus codes":
@@ -121,6 +130,7 @@ def number(num, difficulty):
     global easystages
     global mediumstages
     global hardstages
+    global modulestages
     global projectstages
     global bonusstages
         ########################################Easy#####################################################
@@ -132,6 +142,9 @@ def number(num, difficulty):
         ########################################Hard#####################################################
     elif difficulty == "hard":
         buildpath(hardstages[num], "hard")
+        ########################################Modules#####################################################
+    elif difficulty == "modules":
+        buildpath(modulestages[num], "modules")
         ########################################projects#####################################################
     elif difficulty == "projects":
         buildpath(projectstages[num], "projects")
@@ -150,7 +163,6 @@ def destroyLabel(Objects):
 def easySetup():
     global ObjList
     global window
-    global easytitles
 
     window.configure(bg=easycol)
     titles = easytitles
@@ -196,6 +208,23 @@ def hardSetup():
                       height = 5, width = 15)
         hard.grid(row = (int(hardstages//4)) + 2, column = hardstages - (hardstages//4)*4)
         ObjList.append(hard)
+
+########################################modules#####################################################
+        
+def moduleSetup():
+    window.configure(bg=modulecol)
+    titles = moduletitles
+
+    moduletext = Label(window, text="Modules", height = 5, width=65, bg=modulecol)
+    moduletext.grid(row=1, column=0, columnspan=4)
+    ObjList.append(moduletext)
+    for modulestages in range(len(titles)):
+        module = Button(window, text=titles[modulestages], bg=modulecol,
+                      command=lambda number = number, modulestages = modulestages:number(modulestages, "modules"),
+                      height = 5, width = 15)
+        module.grid(row = (int(modulestages//4)) + 2, column = modulestages - (modulestages//4)*4)
+        ObjList.append(module)
+        
 ########################################projects#####################################################
         
 def projectSetup():
@@ -207,10 +236,11 @@ def projectSetup():
     ObjList.append(projecttext)
     for projectstages in range(len(titles)):
         project = Button(window, text=titles[projectstages], bg=projectcol,
-                      command=lambda number = number, projectstages = projectstages:number(projectstages, "project"),
+                      command=lambda number = number, projectstages = projectstages:number(projectstages, "projects"),
                       height = 5, width = 15)
         project.grid(row = (int(projectstages//4)) + 2, column = projectstages - (projectstages//4)*4)
         ObjList.append(project)
+        
 ########################################Bonus codes#####################################################
         
 def bonusSetup():
@@ -238,10 +268,10 @@ def switch(Name):
     Number = difficulties.index(Name)
     oneUp = Number + 1
     oneDown = Number - 1
-    if oneUp == 5:
+    if oneUp == 6:
         oneUp = 0
     if oneDown == -1:
-        oneDown = 4
+        oneDown = 5
         
     DifficultyUp.configure(text=difficulties[oneUp],bg = Diffcolors[oneUp],
                            command=lambda difficulties = difficulties:switch(difficulties[oneUp]))
@@ -253,6 +283,8 @@ def switch(Name):
         mediumSetup()
     elif Name == "hard":
         hardSetup()
+    elif Name == "modules":
+        moduleSetup()
     elif Name == "projects":
         projectSetup()
     elif Name == "Bonus codes":
@@ -268,9 +300,9 @@ def difficultyswitch():
                           command=lambda difficulties = difficulties:switch(difficulties[1]), width = 15, height = 5,
                           bg = Diffcolors[1])
     DifficultyUp.grid(row = 0, column = 3)
-    DifficultyDown = Button(window, text=difficulties[4],
+    DifficultyDown = Button(window, text=difficulties[5],
                             command=lambda difficulties = difficulties:switch(difficulties[4]), width = 15, height = 5,
-                            bg = Diffcolors[4])
+                            bg = Diffcolors[5])
     DifficultyDown.grid(row = 0, column = 0)
 #_________________________________button changer___________________________________________________________
 ###########################################################################################################
