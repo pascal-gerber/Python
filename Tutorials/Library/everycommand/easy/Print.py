@@ -16,6 +16,8 @@ print('hello world')
 #or going to Run      #
 #and click Run Module #
 #will execute the code#
+#Note: smartphones do #
+#not have that        #
 #######################
 
 #TIP: its on the top of the widget

@@ -3,7 +3,9 @@ from tkinter import filedialog
 import subprocess
 import os
 import sys
+import csv
 import getpass
+import pathlib
 
 ################################################################################################################
 #for easier purposes of editing the file, i put all the changable needed variable lists on the top.
@@ -18,7 +20,7 @@ mediumstages = ["classes.py", ""]
 hardstages = [""]
 
 modulestages = ["Modules.py","Timemodule.py", "Turtle.py",  "osmodule.py", "Tkinter part1.py", "Tkinter part2.py",
-                "Tkinter part3.py", "Tkinter part4.py"]
+                "Tkinter part3.py", "Tkinter part4.py", "Sys.py"]
 
 projectstages = ["turtlestar.py"]
 
@@ -36,7 +38,7 @@ mediumtitles = ["classes", ""]
 hardtitles = [""]
 
 moduletitles = ["download\nmodules","time module", "basic Turtle", "os module", "Gui part 1", "Gui part 2",
-                "Gui part 3", "Gui part 4"]
+                "Gui part 3", "Gui part 4", "system - sys"]
 
 projecttitles = ["Turtle star"]
 
@@ -60,28 +62,68 @@ difficulties = ["easy", "medium", "hard", "modules", "projects", "Bonus codes"]
 ObjList = []
 filename = ""
 
+#android specific kill window
+def killwindow(Object):
+    Object.destroy()
+
+#very very confusing why tkinter is the only module on android that can copy to clipboard
+#but as long as it works... i guess...
+def androidcopytoclipboard(filetext, newWindow):
+    copyandroid = Tk()
+    copyandroid.withdraw()
+    copyandroid.clipboard_clear()
+    copid = Label(newWindow, text="content has been copied\nto clipboard\nnote: exiting the programm will empty\n" +
+                  "your clipboard.")
+    copid.grid(row=3)
+    copyandroid.clipboard_append(filetext)
+
+#android use
+def android(pathfile):
+    newWindow = Tk()
+    readedcontent = ""
+    with open(pathfile) as f:
+        for line in csv.reader(f):
+            try:
+                readedcontent += (str(line[0]) + "\n")
+            except:
+                readedcontent += "\n"
+        content = (readedcontent)
+    showCode = Text(newWindow,height = 20)
+    showCode.grid(columnspan=3)
+    showCode.insert('1.0', content)
+    leave = Button(newWindow, text="exit viewer", command=lambda newWindow = newWindow:killwindow(newWindow))
+    leave.grid(row=2, column=3)
+    copytoClip = Button(newWindow, text="copy whole text\n to keyboard",
+           command=lambda content = content, newWindow = newWindow:androidcopytoclipboard(str(content), newWindow))
+    copytoClip.grid(row=2, column=2)
+    newWindow.mainloop()
+
 #this selects files from the library
 def buildpath(filename, difficulty):
-    global pathtofiles
     pathtofiles = ""
-    droppedFile = sys.argv[0]
-    droppedFile = droppedFile.split("\\")
-    del droppedFile[-1]
-    for each in droppedFile:
-        pathtofiles += each + "\\"
+    droppedFile = pathlib.Path(__file__).parent.resolve()
+    if sys.platform == "linux":
+        lines = "/"
+    else:
+        lines = "\\"
     if difficulty == "easy":
-        pathtofiles += "easy\\" + filename
+        pathtofiles += "easy" + lines + filename
     elif difficulty == "medium":
-        pathtofiles += "medium\\" + filename
+        pathtofiles += "medium" + lines + filename
     elif difficulty == "hard":
-        pathtofiles += "hard\\" + filename
+        pathtofiles += "hard" + lines + filename
     elif difficulty == "modules":
-        pathtofiles += "modules\\" + filename
+        pathtofiles += "modules" + lines + filename
     elif difficulty == "projects":
-        pathtofiles += "projects\\" + filename
+        pathtofiles += "projects" + lines + filename
     elif difficulty == "Bonus codes":
-        pathtofiles += "Bonus\\" + filename
-    openpython(pathtofiles)
+        pathtofiles += "Bonus" + lines + filename
+    #for other platforms \/
+    if sys.platform == "win32" or sys.platform == "win64":
+        openpython(pathtofiles)
+    elif sys.platform == "linux":
+        pathtofiles = str(droppedFile) + lines + pathtofiles
+        android(pathtofiles)
 
 #this opens the requested file with the python program.
 def openpython(path):
@@ -133,6 +175,7 @@ def number(num, difficulty):
     global modulestages
     global projectstages
     global bonusstages
+        #_______________________________________Specific Button selector_________________________________
         ########################################Easy#####################################################
     if difficulty == "easy":
                 buildpath(easystages[num], "easy")
@@ -157,7 +200,7 @@ def destroyLabel(Objects):
     for Obj in Objects:
         Obj.destroy()
     ObjList = []
-        
+#_______________________________________Easy_____________________________________________________        
 ########################################Easy#####################################################
 #there are all the settups for each page    
 def easySetup():
@@ -176,7 +219,7 @@ def easySetup():
                       height = 5, width = 15)
         easy.grid(row = (int(easystages//4)) + 2, column = easystages - (easystages//4)*4)
         ObjList.append(easy)
-    
+#_______________________________________Medium_____________________________________________________
 ########################################Medium#####################################################
         
 def mediumSetup():
@@ -192,7 +235,7 @@ def mediumSetup():
                       height = 5, width = 15)
         medium.grid(row = (int(mediumstages//4)) + 2, column = mediumstages - (mediumstages//4)*4)
         ObjList.append(medium)
-
+#_______________________________________Hard_____________________________________________________
 ########################################Hard#####################################################
         
 def hardSetup():
@@ -208,7 +251,7 @@ def hardSetup():
                       height = 5, width = 15)
         hard.grid(row = (int(hardstages//4)) + 2, column = hardstages - (hardstages//4)*4)
         ObjList.append(hard)
-
+#_______________________________________modules_____________________________________________________
 ########################################modules#####################################################
         
 def moduleSetup():
@@ -224,7 +267,7 @@ def moduleSetup():
                       height = 5, width = 15)
         module.grid(row = (int(modulestages//4)) + 2, column = modulestages - (modulestages//4)*4)
         ObjList.append(module)
-        
+#_______________________________________projects_____________________________________________________
 ########################################projects#####################################################
         
 def projectSetup():
@@ -240,7 +283,7 @@ def projectSetup():
                       height = 5, width = 15)
         project.grid(row = (int(projectstages//4)) + 2, column = projectstages - (projectstages//4)*4)
         ObjList.append(project)
-        
+#______________________________________Bonus codes______________________________________________________    
 ########################################Bonus codes#####################################################
         
 def bonusSetup():
