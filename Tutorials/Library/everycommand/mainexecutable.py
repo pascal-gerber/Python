@@ -15,7 +15,7 @@ easystages = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Va
                      "String options.py", "Math module and calculations.py", "indexes.py"
                      ]
 
-mediumstages = ["classes.py", ""]
+mediumstages = ["classes.py", "open.py"]
 
 hardstages = [""]
 
@@ -24,7 +24,7 @@ modulestages = ["Modules.py","Timemodule.py", "Turtle.py",  "osmodule.py", "Tkin
 
 projectstages = ["turtlestar.py"]
 
-bonusstages = [""]
+bonusstages = ["Lists.py"]
 
 ################################################################################################################
 #same reason here why its on the top
@@ -33,7 +33,7 @@ easytitles = ["print explaination", "Variables part 1", "Variables part 2", "con
               "List sorting", "input", "if function", "python loops", "Functions", 
               "string options", "Mathematical\noperations","List Indexes"]
 
-mediumtitles = ["classes", ""]
+mediumtitles = ["classes", "edit files"]
 
 hardtitles = [""]
 
@@ -42,7 +42,7 @@ moduletitles = ["download\nmodules","time module", "basic Turtle", "os module", 
 
 projecttitles = ["Turtle star"]
 
-bonustitles = [""]
+bonustitles = ["Lists"]
 ################################################################################################################
 
 #these are the colors of each section
@@ -62,6 +62,16 @@ difficulties = ["easy", "medium", "hard", "modules", "projects", "Bonus codes"]
 ObjList = []
 filename = ""
 
+
+
+##################################################################################################################
+##################################################################################################################
+#______________________________Android_Usability_________________________________________________________________#
+##################################################################################################################
+##################################################################################################################
+
+editClick = ""
+
 #android specific kill window
 def killwindow(Object):
     Object.destroy()
@@ -77,8 +87,21 @@ def androidcopytoclipboard(filetext, newWindow):
     copid.grid(row=3)
     copyandroid.clipboard_append(filetext)
 
+#edit localfile
+def switchedit(editwindow, switch):
+    global editClick
+    if switch == False:
+        switch = True
+        editwindow['state'] = NORMAL
+        editClick.configure(text="Edit :" + str(switch))
+    elif switch == True:
+        switch = False
+        editwindow['state'] = DISABLED
+        editClick.configure(text="Edit :" + str(switch))
+
 #android use
 def android(pathfile):
+    global editClick
     newWindow = Tk()
     readedcontent = ""
     with open(pathfile) as f:
@@ -91,10 +114,16 @@ def android(pathfile):
     showCode = Text(newWindow,height = 20)
     showCode.grid(columnspan=3)
     showCode.insert('1.0', content)
+    showCode['state'] = DISABLED
+    editVal = False
+    editClick = Button(newWindow, text="Edit :" + str(editVal),
+                       command=lambda editVal = editVal, showCode = showCode: switchedit(showCode, editVal))
+    editClick.grid(row=2, column=1)
     leave = Button(newWindow, text="exit viewer", command=lambda newWindow = newWindow:killwindow(newWindow))
     leave.grid(row=2, column=3)
     copytoClip = Button(newWindow, text="copy whole text\n to keyboard",
-           command=lambda content = content, newWindow = newWindow:androidcopytoclipboard(str(content), newWindow))
+           command=lambda newWindow = newWindow,
+                        showCode = showCode:androidcopytoclipboard(str(showCode.get("1.0", END)), newWindow))
     copytoClip.grid(row=2, column=2)
     newWindow.mainloop()
 
@@ -118,12 +147,16 @@ def buildpath(filename, difficulty):
         pathtofiles += "projects" + lines + filename
     elif difficulty == "Bonus codes":
         pathtofiles += "Bonus" + lines + filename
+        
     #for other platforms \/
     if sys.platform == "win32" or sys.platform == "win64":
         openpython(pathtofiles)
     elif sys.platform == "linux":
         pathtofiles = str(droppedFile) + lines + pathtofiles
         android(pathtofiles)
+
+##################################################################################################################
+##################################################################################################################
 
 #this opens the requested file with the python program.
 def openpython(path):
@@ -290,12 +323,12 @@ def bonusSetup():
     window.configure(bg=bonuscol)
     titles = bonustitles
 
-    bonustext = Label(window, text="Bonuses and shortcuts", height = 5, width=65, bg=bonuscol)
+    bonustext = Label(window, text="Bonuses and shortcuts\nLife hacks", height = 5, width=65, bg=bonuscol)
     bonustext.grid(row=1, column=0, columnspan=4)
     ObjList.append(bonustext)
     for bonusstages in range(len(titles)):
         bonus = Button(window, text=titles[bonusstages], bg=bonuscol,
-                      command=lambda number = number, bonusstages = bonusstages:number(bonusstages, "bonus"),
+                      command=lambda number = number, bonusstages = bonusstages:number(bonusstages, "Bonus codes"),
                       height = 5, width = 15)
         bonus.grid(row = (int(bonusstages//4)) + 2, column = bonusstages - (bonusstages//4)*4)
         ObjList.append(bonus)
@@ -344,7 +377,7 @@ def difficultyswitch():
                           bg = Diffcolors[1])
     DifficultyUp.grid(row = 0, column = 3)
     DifficultyDown = Button(window, text=difficulties[5],
-                            command=lambda difficulties = difficulties:switch(difficulties[4]), width = 15, height = 5,
+                            command=lambda difficulties = difficulties:switch(difficulties[5]), width = 15, height = 5,
                             bg = Diffcolors[5])
     DifficultyDown.grid(row = 0, column = 0)
 #_________________________________button changer___________________________________________________________
