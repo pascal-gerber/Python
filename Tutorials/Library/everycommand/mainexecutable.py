@@ -114,9 +114,7 @@ def android(pathfile):
     with open(pathfile) as f:
         for line in csv.reader(f):
             try:
-                allcontent = ""
-                for each in line:
-                    allcontent = allcontent + str(each)
+                allcontent = ",".join(line)
                 readedcontent += (str(allcontent) + "\n")
             except:
                 readedcontent += "\n"
