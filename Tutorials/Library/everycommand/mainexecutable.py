@@ -17,14 +17,14 @@ easystages = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Va
 
 mediumstages = ["classes.py", "open.py"]
 
-hardstages = [""]
+hardstages = ["Encapsulation.py"]
 
 modulestages = ["Modules.py","Timemodule.py", "Turtle.py",  "osmodule.py", "Tkinter part1.py", "Tkinter part2.py",
                 "Tkinter part3.py", "Tkinter part4.py", "Sys.py"]
 
-projectstages = ["turtlestar.py"]
+projectstages = ["turtlestar.py", "goatgame.py", "Clock.py"]
 
-bonusstages = ["Lists.py"]
+bonusstages = ["Lists.py", "Editing files.py"]
 
 ################################################################################################################
 #same reason here why its on the top
@@ -35,14 +35,14 @@ easytitles = ["print explaination", "Variables part 1", "Variables part 2", "con
 
 mediumtitles = ["classes", "edit files"]
 
-hardtitles = [""]
+hardtitles = ["Encapsulation\nprivate class"]
 
 moduletitles = ["download\nmodules","time module", "basic Turtle", "os module", "Gui part 1", "Gui part 2",
                 "Gui part 3", "Gui part 4", "system - sys"]
 
-projecttitles = ["Turtle star"]
+projecttitles = ["Turtle star", "Goat game", "Clock to 2030"]
 
-bonustitles = ["Lists"]
+bonustitles = ["Lists", "File manipulation"]
 ################################################################################################################
 
 #these are the colors of each section
@@ -71,6 +71,8 @@ filename = ""
 ##################################################################################################################
 
 editClick = ""
+editVal = None
+showCode = None
 
 #android specific kill window
 def killwindow(Object):
@@ -88,26 +90,34 @@ def androidcopytoclipboard(filetext, newWindow):
     copyandroid.clipboard_append(filetext)
 
 #edit localfile
-def switchedit(editwindow, switch):
+def switchedit(switch):
+    global showCode
+    global editVal
     global editClick
-    if switch == False:
-        switch = True
-        editwindow['state'] = NORMAL
-        editClick.configure(text="Edit :" + str(switch))
-    elif switch == True:
-        switch = False
-        editwindow['state'] = DISABLED
-        editClick.configure(text="Edit :" + str(switch))
+    if editVal == False:
+        editVal = True
+        showCode['state'] = NORMAL
+        editClick.configure(text="Edit :" + str(editVal))
+    elif editVal == True:
+        editVal = False
+        showCode['state'] = DISABLED
+        editClick.configure(text="Edit :" + str(editVal))
 
 #android use
 def android(pathfile):
+    global showCode
     global editClick
+    global editVal
     newWindow = Tk()
+    newWindow.configure(bg="Grey")
     readedcontent = ""
     with open(pathfile) as f:
         for line in csv.reader(f):
             try:
-                readedcontent += (str(line[0]) + "\n")
+                allcontent = ""
+                for each in line:
+                    allcontent = allcontent + str(each)
+                readedcontent += (str(allcontent) + "\n")
             except:
                 readedcontent += "\n"
         content = (readedcontent)
@@ -117,14 +127,18 @@ def android(pathfile):
     showCode['state'] = DISABLED
     editVal = False
     editClick = Button(newWindow, text="Edit :" + str(editVal),
-                       command=lambda editVal = editVal, showCode = showCode: switchedit(showCode, editVal))
-    editClick.grid(row=2, column=1)
-    leave = Button(newWindow, text="exit viewer", command=lambda newWindow = newWindow:killwindow(newWindow))
-    leave.grid(row=2, column=3)
+                       command=lambda showCode = showCode: switchedit(showCode),
+                       height = 5, width = 15)
+    editClick.grid(row=2, column=0)
     copytoClip = Button(newWindow, text="copy whole text\n to keyboard",
-           command=lambda newWindow = newWindow,
-                        showCode = showCode:androidcopytoclipboard(str(showCode.get("1.0", END)), newWindow))
-    copytoClip.grid(row=2, column=2)
+                        command=lambda newWindow = newWindow,
+                        showCode = showCode:androidcopytoclipboard(str(showCode.get("1.0", END)), newWindow),
+                        height = 5, width = 15)
+    copytoClip.grid(row=2, column=1)
+    leave = Button(newWindow, text="exit viewer", command=lambda newWindow = newWindow:killwindow(newWindow),
+                   height = 5, width = 15)
+    leave.grid(row=2, column=2)
+
     newWindow.mainloop()
 
 #this selects files from the library

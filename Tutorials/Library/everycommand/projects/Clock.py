@@ -6,9 +6,11 @@ import threading
 def interface():
     global window
     window = Tk()
+    #the font of the window will change every font on each label or buttons
     window.option_add('*Font', '19')
     Information = Label(window, text="countdown to 2030")
     Information.grid(row=1, column=1)
+    #tick...
     timeTick = Label(window, text="tick")
     timeTick.grid(row=4, column=1)
     window.title("2030 clock")
