@@ -6,6 +6,8 @@ import sys
 import csv
 import getpass
 import pathlib
+import threading
+import webbrowser
 
 ################################################################################################################
 #for easier purposes of editing the file, i put all the changable needed variable lists on the top.
@@ -15,7 +17,7 @@ easystages = ["Print.py", "variables1.py", "variables2.py", "variables3.py", "Va
                      "String options.py", "Math module and calculations.py", "indexes.py"
                      ]
 
-mediumstages = ["classes.py", "open.py"]
+mediumstages = ["classes.py", "open.py", "String Manipulation.py"]
 
 hardstages = ["Encapsulation.py"]
 
@@ -33,7 +35,7 @@ easytitles = ["print explaination", "Variables part 1", "Variables part 2", "con
               "List sorting", "input", "if function", "python loops", "Functions", 
               "string options", "Mathematical\noperations","List Indexes"]
 
-mediumtitles = ["classes", "edit files"]
+mediumtitles = ["classes", "edit files", "string manipulation"]
 
 hardtitles = ["Encapsulation\nprivate class"]
 
@@ -48,12 +50,12 @@ bonustitles = ["Lists", "File manipulation"]
 #these are the colors of each section
 #"can be edited if colors don't fit your needs"
 #_______________________________________________________________________________________
-easycol = "Aqua"
-mediumcol = "Lime"
-hardcol = "OrangeRed"
-modulecol = "Teal"
-projectcol = "Gold"
-bonuscol = "Silver"
+easycol = ["DarkTurquoise", "Aqua"]
+mediumcol = ["LimeGreen", "Lime"]
+hardcol = ["FireBrick", "Red"]
+modulecol = ["Teal", "LightSeaGreen"]
+projectcol = ["Gold", "Yellow"]
+bonuscol = ["Silver", "Gainsboro"]
 #_______________________________________________________________________________________
 
 #some variable lines "should not be edited"
@@ -108,6 +110,7 @@ def android(pathfile):
     global showCode
     global editClick
     global editVal
+    global openname
     newWindow = Tk()
     newWindow.configure(bg="Grey")
     readedcontent = ""
@@ -136,17 +139,22 @@ def android(pathfile):
     leave = Button(newWindow, text="exit viewer", command=lambda newWindow = newWindow:killwindow(newWindow),
                    height = 5, width = 15)
     leave.grid(row=2, column=2)
-
+    newWindow.title(openname)
     newWindow.mainloop()
+
+openname = ""
 
 #this selects files from the library
 def buildpath(filename, difficulty):
+    global openname
+    openname = filename
     pathtofiles = ""
-    droppedFile = pathlib.Path(__file__).parent.resolve()
-    if sys.platform == "linux":
-        lines = "/"
-    else:
+    if sys.platform == "win32" or sys.platform == "win64":
+        droppedFile = os.getcwd()
         lines = "\\"
+    elif sys.platform == "linux":
+        droppedFile = pathlib.Path(__file__).parent.resolve()
+        lines = "/"
     if difficulty == "easy":
         pathtofiles += "easy" + lines + filename
     elif difficulty == "medium":
@@ -159,12 +167,12 @@ def buildpath(filename, difficulty):
         pathtofiles += "projects" + lines + filename
     elif difficulty == "Bonus codes":
         pathtofiles += "Bonus" + lines + filename
-        
+
+    pathtofiles = str(droppedFile) + lines + pathtofiles
     #for other platforms \/
     if sys.platform == "win32" or sys.platform == "win64":
         openpython(pathtofiles)
     elif sys.platform == "linux":
-        pathtofiles = str(droppedFile) + lines + pathtofiles
         android(pathtofiles)
 
 ##################################################################################################################
@@ -240,26 +248,30 @@ def number(num, difficulty):
     elif difficulty == "Bonus codes":
         buildpath(bonusstages[num], "Bonus codes")
         
-def destroyLabel(Objects):
+def destroyLabel():
     global ObjList
-    for Obj in Objects:
+    for Obj in ObjList:
         Obj.destroy()
     ObjList = []
 #_______________________________________Easy_____________________________________________________        
 ########################################Easy#####################################################
-#there are all the settups for each page    
+#there are all the settups for each page
+
+#font for each    
+titlefont = ("Bahnschrift", 11)
+    
 def easySetup():
     global ObjList
     global window
 
-    window.configure(bg=easycol)
+    window.configure(bg=easycol[0])
     titles = easytitles
     
-    easytext = Label(window, text="Basic simple knowledge", height = 5, width=65, bg=easycol)
-    easytext.grid(row=1, column=0, columnspan=4)
+    easytext = Label(window, text="Basic simple knowledge", height = 5, width=65, bg=easycol[0], font = titlefont)
+    easytext.grid(row=1, column=0, columnspan=6)
     ObjList.append(easytext)
     for easystages in range(len(titles)):
-        easy = Button(window, text=titles[easystages], bg=easycol,
+        easy = Button(window, text=titles[easystages], bg=easycol[1],
                       command=lambda number = number, easystages = easystages:number(easystages, "easy"),
                       height = 5, width = 15)
         easy.grid(row = (int(easystages//4)) + 2, column = easystages - (easystages//4)*4)
@@ -268,14 +280,14 @@ def easySetup():
 ########################################Medium#####################################################
         
 def mediumSetup():
-    window.configure(bg=mediumcol)
+    window.configure(bg=mediumcol[0])
     titles = mediumtitles
 
-    mediumtext = Label(window, text="Basic Highter knowledge", height = 5, width=65, bg=mediumcol)
-    mediumtext.grid(row=1, column=0, columnspan=4)
+    mediumtext = Label(window, text="Basic Highter knowledge", height = 5, width=65, bg=mediumcol[0], font = titlefont)
+    mediumtext.grid(row=1, column=0, columnspan=6)
     ObjList.append(mediumtext)
     for mediumstages in range(len(titles)):
-        medium = Button(window, text=titles[mediumstages], bg=mediumcol,
+        medium = Button(window, text=titles[mediumstages], bg=mediumcol[1],
                       command=lambda number = number, mediumstages = mediumstages:number(mediumstages, "medium"),
                       height = 5, width = 15)
         medium.grid(row = (int(mediumstages//4)) + 2, column = mediumstages - (mediumstages//4)*4)
@@ -284,14 +296,14 @@ def mediumSetup():
 ########################################Hard#####################################################
         
 def hardSetup():
-    window.configure(bg=hardcol)
+    window.configure(bg=hardcol[0])
     titles = hardtitles
 
-    hardtext = Label(window, text="Advanced knowledge", height = 5, width=65, bg=hardcol)
-    hardtext.grid(row=1, column=0, columnspan=4)
+    hardtext = Label(window, text="Advanced knowledge", height = 5, width=65, bg=hardcol[0], font = titlefont)
+    hardtext.grid(row=1, column=0, columnspan=6)
     ObjList.append(hardtext)
     for hardstages in range(len(titles)):
-        hard = Button(window, text=titles[hardstages], bg=hardcol,
+        hard = Button(window, text=titles[hardstages], bg=hardcol[1],
                       command=lambda number = number, hardstages = hardstages:number(hardstages, "hard"),
                       height = 5, width = 15)
         hard.grid(row = (int(hardstages//4)) + 2, column = hardstages - (hardstages//4)*4)
@@ -300,14 +312,16 @@ def hardSetup():
 ########################################modules#####################################################
         
 def moduleSetup():
-    window.configure(bg=modulecol)
+    window.configure(bg=modulecol[0])
     titles = moduletitles
-
-    moduletext = Label(window, text="Modules", height = 5, width=65, bg=modulecol)
-    moduletext.grid(row=1, column=0, columnspan=4)
+    regexButton = Button(window, text="Regex", command = regexSetup, width = 30, height = 5, bg="grey")
+    regexButton.grid(row = 0, column = 1, columnspan = 2)
+    ObjList.append(regexButton)
+    moduletext = Label(window, text="Modules", height = 5, width=65, bg=modulecol[0], font = titlefont)
+    moduletext.grid(row=1, column=0, columnspan=6)
     ObjList.append(moduletext)
     for modulestages in range(len(titles)):
-        module = Button(window, text=titles[modulestages], bg=modulecol,
+        module = Button(window, text=titles[modulestages], bg=modulecol[1],
                       command=lambda number = number, modulestages = modulestages:number(modulestages, "modules"),
                       height = 5, width = 15)
         module.grid(row = (int(modulestages//4)) + 2, column = modulestages - (modulestages//4)*4)
@@ -316,14 +330,14 @@ def moduleSetup():
 ########################################projects#####################################################
         
 def projectSetup():
-    window.configure(bg=projectcol)
+    window.configure(bg=projectcol[0])
     titles = projecttitles
 
-    projecttext = Label(window, text="Projects", height = 5, width=65, bg=projectcol)
-    projecttext.grid(row=1, column=0, columnspan=4)
+    projecttext = Label(window, text="Projects", height = 5, width=65, bg=projectcol[0], font = titlefont)
+    projecttext.grid(row=1, column=0, columnspan=6)
     ObjList.append(projecttext)
     for projectstages in range(len(titles)):
-        project = Button(window, text=titles[projectstages], bg=projectcol,
+        project = Button(window, text=titles[projectstages], bg=projectcol[1],
                       command=lambda number = number, projectstages = projectstages:number(projectstages, "projects"),
                       height = 5, width = 15)
         project.grid(row = (int(projectstages//4)) + 2, column = projectstages - (projectstages//4)*4)
@@ -332,18 +346,92 @@ def projectSetup():
 ########################################Bonus codes#####################################################
         
 def bonusSetup():
-    window.configure(bg=bonuscol)
+    window.configure(bg=bonuscol[0])
     titles = bonustitles
 
-    bonustext = Label(window, text="Bonuses and shortcuts\nLife hacks", height = 5, width=65, bg=bonuscol)
-    bonustext.grid(row=1, column=0, columnspan=4)
+    bonustext = Label(window, text="Bonuses and shortcuts\nLife hacks", height = 5, width=65, bg=bonuscol[0], font = titlefont)
+    bonustext.grid(row=1, column=0, columnspan=5)
     ObjList.append(bonustext)
     for bonusstages in range(len(titles)):
-        bonus = Button(window, text=titles[bonusstages], bg=bonuscol,
+        bonus = Button(window, text=titles[bonusstages], bg=bonuscol[1],
                       command=lambda number = number, bonusstages = bonusstages:number(bonusstages, "Bonus codes"),
                       height = 5, width = 15)
         bonus.grid(row = (int(bonusstages//4)) + 2, column = bonusstages - (bonusstages//4)*4)
         ObjList.append(bonus)
+
+#_________________________________Tutorial for regex______________________________________________________
+##########################################################################################################
+
+
+def regexSetup():
+    Regex = Tk()
+
+#######################################Information############################################################
+    
+    Information = Label(Regex, text="regex is a Module that finds\nspecific pattern into the text", bg="BurlyWood")
+    Information.grid(row=1, column=1, columnspan=4)
+
+    helptext = ("Cheatset:\n[aeoiu] *finds all the vovels in the text\n" +
+                "(hello) *finds the specific words 'hello'\n" +
+                "[^aeiou] *excludes all vowels\n\nNow the signs after those blocks\n" +
+                "*  will select everything correct and connect them all\n" +
+                "+  same but only works for one or more than one\n" +
+                "?  will only select one at a time and ignore the empty\n" +
+                "{2} will select 2 correct at a time\n\n" +
+                "at the end a code will look like that:\n" +
+                "[aeiou]*(hello){2}\n\nhere are some links:")
+
+#########################################Buttons########################################################
+
+    cheatSet = Label(Regex, text=helptext, bg="BurlyWood")
+    cheatSet.grid(row=2, column=1, columnspan=4)
+
+    FirstRegex = Button(Regex, text="regex101", command=lambda openLink = openLink:openLink("https://regex101.com/"),
+                        height=10, width=15, bg="Moccasin")
+    FirstRegex.grid(row=3, column=1)
+    SecondRegex = Button(Regex, text="regexr", command=lambda openLink = openLink:openLink("https://regexr.com/"),
+                         height=10, width=15, bg="Moccasin")
+    SecondRegex.grid(row=3, column=2)
+    cheatsheet = Button(Regex, text="Cheatsheet 1", command=lambda openLink = openLink:openLink("https://medium.com/factory-mind/regex-cookbook-most-wanted-regex-aa721558c3c1"),
+                        height=10, width=15, bg="Moccasin")
+    cheatsheet.grid(row=3, column=3)
+    secondCheat = Button(Regex, text="Cheatsheet 2", command=lambda openLink = openLink:openLink("https://www3.ntu.edu.sg/home/ehchua/programming/howto/Regexe.html"),
+                         height=10, width=15, bg="Moccasin")
+    secondCheat.grid(row=3, column=4)
+    pythonRegex = Button(Regex, text="python", command=showpyhton,
+                         height=10, width=15, bg="Moccasin")
+    pythonRegex.grid(row=3, column=5) 
+
+    Regex.configure(bg="BurlyWood")
+    if sys.platform == "win32" or sys.platform == "win64":
+        Regex.geometry("600x500")
+    elif sys.platform == "linux":
+        Regex.geometry("2000x1000")
+    Regex.title("Regex")
+    Regex.mainloop()
+
+
+##########################################################################################################
+    
+def openLink(link):
+    webbrowser.open_new(link)
+##########################################################################################################
+    
+def showpyhton():
+    if sys.platform == "win32" or sys.platform == "win64":
+        droppedFile = os.getcwd()
+        lines = "\\"
+    elif sys.platform == "linux":
+        droppedFile = pathlib.Path(__file__).parent.resolve()
+        lines = "/"
+        
+    pathtofiles = str(droppedFile) + lines + "regex" + lines + "Regex.py"
+
+    if sys.platform == "win32" or sys.platform == "win64":
+        openpython(pathtofiles)
+    elif sys.platform == "linux":
+        android(pathtofiles)
+
 #__________________________________Pages___________________________________________________________________
 ###########################################################################################################
 
@@ -351,7 +439,7 @@ def switch(Name):
     global ObjList
     global DifficultyUp
     global DifficultyDown
-    destroyLabel(ObjList)
+    destroyLabel()
 
     Number = difficulties.index(Name)
     oneUp = Number + 1
@@ -361,9 +449,9 @@ def switch(Name):
     if oneDown == -1:
         oneDown = 5
         
-    DifficultyUp.configure(text=difficulties[oneUp],bg = Diffcolors[oneUp],
+    DifficultyUp.configure(text=difficulties[oneUp],bg = Diffcolors[oneUp][0],
                            command=lambda difficulties = difficulties:switch(difficulties[oneUp]))
-    DifficultyDown.configure(text=difficulties[oneDown], bg = Diffcolors[oneDown],
+    DifficultyDown.configure(text=difficulties[oneDown], bg = Diffcolors[oneDown][0],
                              command=lambda difficulties = difficulties:switch(difficulties[oneDown]))
     if Name == "easy":
         easySetup()
@@ -386,11 +474,11 @@ def difficultyswitch():
     global DifficultyDown
     DifficultyUp = Button(window, text=difficulties[1],
                           command=lambda difficulties = difficulties:switch(difficulties[1]), width = 15, height = 5,
-                          bg = Diffcolors[1])
+                          bg = Diffcolors[1][0])
     DifficultyUp.grid(row = 0, column = 3)
     DifficultyDown = Button(window, text=difficulties[5],
                             command=lambda difficulties = difficulties:switch(difficulties[5]), width = 15, height = 5,
-                            bg = Diffcolors[5])
+                            bg = Diffcolors[5][0])
     DifficultyDown.grid(row = 0, column = 0)
 #_________________________________button changer___________________________________________________________
 ###########################################################################################################
@@ -401,7 +489,7 @@ def createinterface():
     easySetup()
     difficultyswitch()
     window.title("python library")
-    window.geometry("460x600")
+    window.geometry("500x600")
     window.mainloop()
             
 createinterface()
